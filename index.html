@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+
+<body>
+    <div class=calculator-grid>
+        <div class="output">
+            <div data-previousdisplay class="data-previousdisplay" id="previous-display" type="text">0</div>
+            <div data-currentdisplay class="data-currentdisplay" id="current-display" type="text">0</div>
+        </div>
+        <div>
+            <button data-clear>C</button>
+            <button data-delete>DEL</button>
+            <button data-operation>/</button>
+        </div>
+        <div>
+            <button data-number>1</button>
+            <button data-number>2</button>
+            <button data-number>3</button>
+            <button data-operation>*</button>
+        </div>
+        <div>
+            <button data-number>4</button>
+            <button data-number>5</button>
+            <button data-number>6</button>
+            <button data-operation>-</button>
+        </div>
+        <div>
+            <button data-number>7</button>
+            <button data-number>8</button>
+            <button data-number>9</button>
+            <button data-operation>+</button>
+        </div>
+        <div>
+            <button data-number>.</button>
+            <button data-number>0</button>
+            <button data-equals>=</button>
+        </div>
+    </div>
+</body>
+
+</html>
+<script type="text/javascript">
+    class Calculator {
+        constructor(previousTextDisplay, currentTextDisplay) {
+            this.previousTextDisplay = previousTextDisplay
+            this.currentTextDisplay = currentTextDisplay
+            this.clear()
+        }
+
+        clear() {
+            this.currentdisplay = '0'
+            this.previousdisplay = ''
+            this.operation = undefined
+        }
+
+        delete() {
+            this.currentdisplay = this.currentdisplay.toString().slice(0, -1)
+        }
+
+        inputNumber(number) {
+            if (number === '.' && this.currentdisplay.includes('.')) return
+            this.currentdisplay = this.currentdisplay.toString() + number.toString()
+        }
+
+        chooseOperation(operation) {
+            if (this.currentdisplay === '') return
+            if (this.previousdisplay !== '') {
+                this.compute()
+            }
+            this.operation = operation
+            this.previousdisplay = this.currentdisplay
+            this.currentdisplay = ''
+        }
+
+        compute() {
+            let computation
+            var previous = parseFloat(this.previousdisplay)
+            var current = parseFloat(this.currentdisplay)
+            if (isNaN(previous) || isNaN(current)) return
+            switch (this.operation) {
+                case '+':
+                    computation = previous + current
+                    break
+                case '-':
+                    computation = previous - current
+                    break
+                case '*':
+                    computation = previous * current
+                    break
+                case '/':
+                    computation = previous / current
+                    break
+                default:
+                    return
+            }
+            this.currentdisplay = computation
+            this.operation = undefined
+            this.previousdisplay = ''
+        }
+
+        updatedisplay() {
+            this.currentTextDisplay.innerText = this.currentdisplay
+            this.previousTextDisplay.innerText = this.previousdisplay
+        }
+    }
+
+    var numberButtons = document.querySelectorAll('[data-number]')
+    var operationButtons = document.querySelectorAll('[data-operation]')
+    var clearButton = document.querySelector('[data-clear]')
+    var deleteButton = document.querySelector('[data-delete]')
+    var equalsButton = document.querySelector('[data-equals]')
+    var previousTextDisplay = document.querySelector('[data-previousdisplay]')
+    var currentTextDisplay = document.querySelector('[data-currentdisplay]')
+
+    var calculator = new Calculator(previousTextDisplay, currentTextDisplay)
+
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            calculator.inputNumber(button.innerText)
+            calculator.updatedisplay()
+        })
+    })
+
+    operationButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            calculator.chooseOperation(button.innerText)
+            calculator.updatedisplay()
+        })
+    })
+
+    equalsButton.addEventListener('click', button => {
+        calculator.compute()
+        calculator.updatedisplay()
+    })
+
+    clearButton.addEventListener('click', button => {
+        calculator.clear()
+        calculator.updatedisplay()
+    })
+
+    deleteButton.addEventListener('click', button => {
+        calculator.delete()
+        calculator.updatedisplay()
+    })
+</script>
