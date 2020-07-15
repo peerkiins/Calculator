@@ -10,42 +10,99 @@
 <body>
     <div class=calculator-grid>
         <div class="output">
-            <div data-previousdisplay class="data-previousdisplay" id="previous-display" type="text">0</div>
-            <div data-currentdisplay class="data-currentdisplay" id="current-display" type="text">0</div>
+            <div data-previousdisplay class="data-previousdisplay" id="previous-display" type="text"></div>
+            <div data-currentdisplay class="data-currentdisplay" id="current-display" type="text"></div>
         </div>
-        <div>
-            <button data-clear>C</button>
-            <button data-delete>DEL</button>
-            <button data-operation>/</button>
-        </div>
-        <div>
-            <button data-number>1</button>
-            <button data-number>2</button>
-            <button data-number>3</button>
-            <button data-operation>*</button>
-        </div>
-        <div>
-            <button data-number>4</button>
-            <button data-number>5</button>
-            <button data-number>6</button>
-            <button data-operation>-</button>
-        </div>
-        <div>
-            <button data-number>7</button>
-            <button data-number>8</button>
-            <button data-number>9</button>
-            <button data-operation>+</button>
-        </div>
-        <div>
-            <button data-number>.</button>
-            <button data-number>0</button>
-            <button data-equals>=</button>
-        </div>
+        <button data-clear class="span-two">C</button>
+        <button data-delete>DEL</button>
+        <button data-operation>/</button>
+        <button data-number>1</button>
+        <button data-number>2</button>
+        <button data-number>3</button>
+        <button data-operation>*</button>
+        <button data-number>4</button>
+        <button data-number>5</button>
+        <button data-number>6</button>
+        <button data-operation>-</button>
+        <button data-number>7</button>
+        <button data-number>8</button>
+        <button data-number>9</button>
+        <button data-operation>+</button>
+        <button data-number>.</button>
+        <button data-number>0</button>
+        <button data-equals class="span-two">=</button>
     </div>
 </body>
 
 </html>
+
+<style>
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: normal;
+    }
+
+    body {
+        padding: 0;
+        margin: 0;
+        background: repeating-linear-gradient(to left, #042e2c, #3b8388)
+    }
+
+    .calculator-grid {
+        display: grid;
+        justify-content: center;
+        align-content: center;
+        min-height: 100vh;
+        grid-template-columns: repeat(4, 100px);
+        grid-template-rows: minmax(120px, auto) repeat(5, 100px);
+    }
+
+    .calculator-grid>button {
+        cursor: pointer;
+        font-size: 2rem;
+        color: cadetblue;
+        border: 1px solid black;
+        outline: transparent;
+        background-color: rgba(48, 47, 47, 0.75);
+    }
+
+    .calculator-grid>button:hover {
+        background-color: rgba(255, 255, 255, .5);
+    }
+
+    .span-two {
+        grid-column: span 2;
+    }
+
+    .output {
+        grid-column: 1 / -1;
+        background-color: rgba(0, 0, 0, .75);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-around;
+        flex-direction: column;
+        padding: 10px;
+        word-wrap: break-word;
+        word-break: break-all;
+    }
+
+    .output .data-previousdisplay {
+        color: rgba(255, 255, 255, .75);
+        font-size: 1.5rem;
+
+    }
+
+    .output .data-currentdisplay {
+        color: seashell;
+        font-size: 2.5rem;
+    }
+</style>
+
 <script type="text/javascript">
+
     class Calculator {
         constructor(previousTextDisplay, currentTextDisplay) {
             this.previousTextDisplay = previousTextDisplay
@@ -54,7 +111,7 @@
         }
 
         clear() {
-            this.currentdisplay = '0'
+            this.currentdisplay = ''
             this.previousdisplay = ''
             this.operation = undefined
         }
@@ -74,7 +131,7 @@
                 this.compute()
             }
             this.operation = operation
-            this.previousdisplay = this.currentdisplay
+            this.previousdisplay = `${this.currentdisplay} ${this.operation}`
             this.currentdisplay = ''
         }
 
@@ -103,6 +160,7 @@
             this.operation = undefined
             this.previousdisplay = ''
         }
+
 
         updatedisplay() {
             this.currentTextDisplay.innerText = this.currentdisplay
@@ -148,4 +206,5 @@
         calculator.delete()
         calculator.updatedisplay()
     })
+
 </script>
