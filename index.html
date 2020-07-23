@@ -5,101 +5,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: normal
+        }
+
+        .calculator {
+            justify-content: center;
+        }
+
+        .output {
+            min-height: 100px;
+            max-width: 410px;
+            word-wrap: break-word;
+            text-align: end;
+            background-color: #042e2c;
+        }
+
+        .previous-display {
+            font-size: 1.5rem;
+            color: aliceblue;
+            opacity: 0.5;
+        }
+
+        .current-display {
+            font-size: 2.5rem;
+            color: aliceblue;
+            opacity: 0.75;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: rgba(114, 241, 214, 0.3);
+            border: 1px solid black;
+            height: 100px;
+            width: 100px
+        }
+
+        .span-two {
+            width: 200px;
+        }
+
+        body {
+            background: repeating-linear-gradient(to left, #042e2c, #3b8388)
+        }
+    </style>
+
 </head>
 
 <body>
-    <div class=calculator-grid>
+    <div class=calculator>
         <div class="output">
-            <div data-previousdisplay class="data-previousdisplay" id="previous-display" type="text"></div>
-            <div data-currentdisplay class="data-currentdisplay" id="current-display" type="text"></div>
+            <div class="previous-display" id="previous-display"></div>
+            <div class="current-display" id="current-display"></div>
         </div>
-        <button data-clear class="span-two">C</button>
-        <button data-delete>DEL</button>
-        <button data-operation>/</button>
-        <button data-number>1</button>
-        <button data-number>2</button>
-        <button data-number>3</button>
-        <button data-operation>*</button>
-        <button data-number>4</button>
-        <button data-number>5</button>
-        <button data-number>6</button>
-        <button data-operation>-</button>
-        <button data-number>7</button>
-        <button data-number>8</button>
-        <button data-number>9</button>
-        <button data-operation>+</button>
-        <button data-number>.</button>
-        <button data-number>0</button>
-        <button data-equals class="span-two">=</button>
+        <div>
+            <button onclick="onClick('AC')">AC</button>
+            <button onclick="onClick('C')" class="span-two">C</button>
+            <button onclick="onClick('/')">/</button>
+        </div>
+        <div>
+            <button onclick="onClick('1')">1</button>
+            <button onclick="onClick('2')">2</button>
+            <button onclick="onClick('3')">3</button>
+            <button onclick="onClick('*')">*</button>
+        </div>
+        <div>
+            <button onclick="onClick('4')">4</button>
+            <button onclick="onClick('5')">5</button>
+            <button onclick="onClick('6')">6</button>
+            <button onclick="onClick('-')">-</button>
+        </div>
+        <div>
+            <button onclick="onClick('7')">7</button>
+            <button onclick="onClick('8')">8</button>
+            <button onclick="onClick('9')">9</button>
+            <button onclick="onClick('+')">+</button>
+        </div>
+        <div>
+            <button onclick="onClick('.')">.</button>
+            <button onclick="onClick('0')">0</button>
+            <button onclick="onClick('=')" class="span-two">=</button>
+        </div>
     </div>
 </body>
 
 </html>
-
-<style>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-weight: normal;
-    }
-
-    body {
-        padding: 0;
-        margin: 0;
-        background: repeating-linear-gradient(to left, #042e2c, #3b8388)
-    }
-
-    .calculator-grid {
-        display: grid;
-        justify-content: center;
-        align-content: center;
-        min-height: 100vh;
-        grid-template-columns: repeat(4, 100px);
-        grid-template-rows: minmax(120px, auto) repeat(5, 100px);
-    }
-
-    .calculator-grid>button {
-        cursor: pointer;
-        font-size: 2rem;
-        color: cadetblue;
-        border: 1px solid black;
-        outline: transparent;
-        background-color: rgba(45, 64, 70, 0.75);
-    }
-
-    .calculator-grid>button:hover {
-        background-color: rgba(255, 255, 255, .5);
-    }
-
-    .span-two {
-        grid-column: span 2;
-    }
-
-    .output {
-        grid-column: 1 / -1;
-        background-color: rgba(19, 45, 49, 0.75);
-        display: flex;
-        align-items: flex-end;
-        justify-content: space-around;
-        flex-direction: column;
-        padding: 10px;
-        word-wrap: break-word;
-        word-break: break-all;
-    }
-
-    .output .data-previousdisplay {
-        color: rgba(255, 255, 255, .75);
-        font-size: 1.5rem;
-
-    }
-
-    .output .data-currentdisplay {
-        color: seashell;
-        font-size: 2.5rem;
-    }
-</style>
 
 <script type="text/javascript">
 
@@ -118,11 +113,13 @@
 
         delete() {
             this.currentdisplay = this.currentdisplay.toString().slice(0, -1)
+            this.updatedisplay()
         }
 
         inputNumber(number) {
             if (number === '.' && this.currentdisplay.includes('.')) return
             this.currentdisplay = this.currentdisplay.toString() + number.toString()
+            this.updatedisplay()
         }
 
         chooseOperation(operation) {
@@ -133,6 +130,7 @@
             this.operation = operation
             this.previousdisplay = `${this.currentdisplay} ${this.operation}`
             this.currentdisplay = ''
+            this.updatedisplay()
         }
 
         compute() {
@@ -159,8 +157,8 @@
             this.currentdisplay = computation
             this.operation = undefined
             this.previousdisplay = ''
+            this.updatedisplay()
         }
-
 
         updatedisplay() {
             this.currentTextDisplay.innerText = this.currentdisplay
@@ -168,43 +166,70 @@
         }
     }
 
-    var numberButtons = document.querySelectorAll('[data-number]')
-    var operationButtons = document.querySelectorAll('[data-operation]')
-    var clearButton = document.querySelector('[data-clear]')
-    var deleteButton = document.querySelector('[data-delete]')
-    var equalsButton = document.querySelector('[data-equals]')
-    var previousTextDisplay = document.querySelector('[data-previousdisplay]')
-    var currentTextDisplay = document.querySelector('[data-currentdisplay]')
+    var previousTextDisplay = document.querySelector('#previous-display')
+    var currentTextDisplay = document.querySelector('#current-display')
 
     var calculator = new Calculator(previousTextDisplay, currentTextDisplay)
 
-    numberButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            calculator.inputNumber(button.innerText)
-            calculator.updatedisplay()
-        })
-    })
-
-    operationButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            calculator.chooseOperation(button.innerText)
-            calculator.updatedisplay()
-        })
-    })
-
-    equalsButton.addEventListener('click', button => {
-        calculator.compute()
-        calculator.updatedisplay()
-    })
-
-    clearButton.addEventListener('click', button => {
-        calculator.clear()
-        calculator.updatedisplay()
-    })
-
-    deleteButton.addEventListener('click', button => {
-        calculator.delete()
-        calculator.updatedisplay()
-    })
-
+    function onClick(str) {
+        switch (str) {
+            case 'AC':
+                calculator.clear()
+                calculator.updatedisplay()
+                break
+            case 'C':
+                calculator.delete()
+                break
+            case '1':
+                calculator.inputNumber(str)
+                break
+            case '2':
+                calculator.inputNumber(str)
+                break
+            case '3':
+                calculator.inputNumber(str)
+                break
+            case '4':
+                calculator.inputNumber(str)
+                break
+            case '5':
+                calculator.inputNumber(str)
+                break
+            case '6':
+                calculator.inputNumber(str)
+                break
+            case '7':
+                calculator.inputNumber(str)
+                break
+            case '8':
+                calculator.inputNumber(str)
+                break
+            case '9':
+                calculator.inputNumber(str)
+                break
+            case '0':
+                calculator.inputNumber(str)
+                break
+            case '.':
+                calculator.inputNumber(str)
+                break
+            case '+':
+                calculator.chooseOperation(str)
+                break
+            case '-':
+                calculator.chooseOperation(str)
+                break
+            case '*':
+                calculator.chooseOperation(str)
+                break
+            case '/':
+                calculator.chooseOperation(str)
+                break
+            case '=':
+                calculator.compute()
+                break
+            default:
+                return
+        }
+    }
 </script>
