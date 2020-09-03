@@ -4,93 +4,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="calculator.css">
     <title>Calculator</title>
-
-    <style>
-        *,
-        *::before,
-        *::after {
-            font-family: Verdana, Geneva, Tahoma, sans-serif;
-            font-weight: normal
-        }
-
-        .calculator {
-            justify-content: center;
-        }
-
-        .output {
-            min-height: 100px;
-            max-width: 410px;
-            word-wrap: break-word;
-            text-align: end;
-            background-color: #042e2c;
-        }
-
-        .previous-display {
-            font-size: 1.5rem;
-            color: aliceblue;
-            opacity: 0.5;
-        }
-
-        .current-display {
-            font-size: 2.5rem;
-            color: aliceblue;
-            opacity: 0.75;
-        }
-
-        button {
-            cursor: pointer;
-            background-color: rgba(114, 241, 214, 0.3);
-            border: 1px solid black;
-            height: 100px;
-            width: 100px
-        }
-
-        .span-two {
-            width: 200px;
-        }
-
-        body {
-            background: repeating-linear-gradient(to left, #042e2c, #3b8388)
-        }
-    </style>
 
 </head>
 
 <body>
-    <div class=calculator>
-        <div class="output">
-            <div class="previous-display" id="previous-display"></div>
-            <div class="current-display" id="current-display"></div>
-        </div>
-        <div>
-            <button onclick="calculator.clear()">AC</button>
-            <button onclick="calculator.delete()" class="span-two">C</button>
-            <button onclick="calculator.chooseOperation('/')">/</button>
-        </div>
-        <div>
-            <button onclick="calculator.inputNumber('1')">1</button>
-            <button onclick="calculator.inputNumber('2')">2</button>
-            <button onclick="calculator.inputNumber('3')">3</button>
-            <button onclick="calculator.chooseOperation('*')">*</button>
-        </div>
-        <div>
-            <button onclick="calculator.inputNumber('4')">4</button>
-            <button onclick="calculator.inputNumber('5')">5</button>
-            <button onclick="calculator.inputNumber('6')">6</button>
-            <button onclick="calculator.chooseOperation('-')">-</button>
-        </div>
-        <div>
-            <button onclick="calculator.inputNumber('7')">7</button>
-            <button onclick="calculator.inputNumber('8')">8</button>
-            <button onclick="calculator.inputNumber('9')">9</button>
-            <button onclick="calculator.chooseOperation('+')">+</button>
-        </div>
-        <div>
-            <button onclick="calculator.inputNumber('.')">.</button>
-            <button onclick="calculator.inputNumber('0')">0</button>
-            <button onclick="calculator.compute()" class="span-two">=</button>
-        </div>
+    <div>
+        <table class="calculator">
+            <tr>
+                <td colspan="4" class="previous-display" id="previous-display"></td>
+            </tr>
+            <tr>
+                <td colspan="4" class="current-display" id="current-display"></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button class="spantwo" onclick="calculator.clear()">AC</button></td>
+                <td><button onclick="calculator.delete()">C</button></td>
+                <td><button onclick="calculator.chooseOperation('/')">/</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="calculator.inputNumber('1')">1</button></td>
+                <td><button onclick="calculator.inputNumber('2')">2</button></td>
+                <td><button onclick="calculator.inputNumber('3')">3</button></td>
+                <td><button onclick="calculator.chooseOperation('*')">*</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="calculator.inputNumber('4')">4</button></td>
+                <td><button onclick="calculator.inputNumber('5')">5</button></td>
+                <td><button onclick="calculator.inputNumber('6')">6</button></td>
+                <td><button onclick="calculator.chooseOperation('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="calculator.inputNumber('7')">7</button></td>
+                <td><button onclick="calculator.inputNumber('8')">8</button></td>
+                <td><button onclick="calculator.inputNumber('9')">9</button></td>
+                <td><button onclick="calculator.chooseOperation('+')">+</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="calculator.inputNumber('.')">.</button></td>
+                <td><button onclick="calculator.inputNumber('0')">0</button></td>
+                <td colspan="2"><button class="spantwo" onclick="calculator.compute()">=</button></td>
+            </tr>
+        </table>
     </div>
 </body>
 
@@ -123,7 +79,7 @@
         }
 
         chooseOperation(operation) {
-            if (this.currentdisplay === '') return
+            if (this.currentdisplay === "0") return
             if (this.previousdisplay !== '') {
                 this.compute()
             }
@@ -156,7 +112,7 @@
             }
             this.currentdisplay = computation
             this.operation = undefined
-            this.previousdisplay = ''
+            this.previousdisplay = "0"
             this.updatedisplay()
         }
 
